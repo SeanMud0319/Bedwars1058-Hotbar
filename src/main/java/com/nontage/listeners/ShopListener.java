@@ -259,7 +259,6 @@ public class ShopListener implements Listener {
         }
         return "";
     }
-
     public static boolean same(ItemStack item1, Material... materials) {
         if (item1 == null || materials == null) return false;
         for (Material material : materials) {
