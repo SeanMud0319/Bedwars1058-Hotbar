@@ -1,0 +1,9 @@
+name: Bedwars1058-Hotbar
+api-version: '1.13'
+version: 1.0
+author: Nontage
+main: com.nontage.Hotbar
+softdepend:  [Bedwars1058]
+commands:
+  test:
+    usage: /test
