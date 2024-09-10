@@ -1,6 +1,6 @@
 package com.nontage.commands;
 
-import com.andrei1058.bedwars.api.BedWars;
+import com.andrei1058.bedwars.BedWars;
 import com.andrei1058.bedwars.api.arena.IArena;
 import com.nontage.Hotbar;
 import com.nontage.listeners.ShopListener;
@@ -9,8 +9,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -25,6 +27,17 @@ public class test implements CommandExecutor {
             if (strings.length == 0) {
                 HotbarMenu.open((Player) commandSender);
             } else if (strings.length == 1) {
+                if (strings[0].equalsIgnoreCase("en1")) {
+                    player.getItemInHand().addEnchantment(Enchantment.DAMAGE_ALL,2);
+                    return true;
+                }
+                if (strings[0].equalsIgnoreCase("en2")) {
+                    ItemStack a = player.getItemInHand();
+                    ItemMeta t = a.getItemMeta();
+                    t.addEnchant(Enchantment.DAMAGE_ALL,2,true);
+                    a.setItemMeta(t);
+                    return true;
+                }
                 if (strings[0].equalsIgnoreCase("debug")) {
                     if (!ShopListener.a.containsKey(player.getUniqueId())) {
                         ShopListener.a.put(player.getUniqueId(),true);

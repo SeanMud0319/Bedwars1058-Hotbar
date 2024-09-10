@@ -13,6 +13,7 @@ import com.andrei1058.bedwars.shop.main.CategoryContent;
 import com.andrei1058.bedwars.shop.quickbuy.PlayerQuickBuyCache;
 import com.nontage.Hotbar;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.NBTTagList;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -73,16 +74,17 @@ public class ShopListener implements Listener {
                     boolean hasEnch = false;
                     for (TeamEnchant teamEnch : e.getArena().getTeam(player).getSwordsEnchantments()) {
                         if (teamEnch.getEnchantment().equals(ench)) {
+                            e.getArena().getTeam(player).getSwordsEnchantments();
                             hasEnch = true;
                             break;
                         }
                     }
                     if (!hasEnch) {
-                        buyItem.removeEnchantment(ench);
+                        meta.removeEnchant(ench);
                     }
                 }
                 for (TeamEnchant teamEnch : e.getArena().getTeam(player).getSwordsEnchantments()) {
-                    buyItem.addEnchantment(teamEnch.getEnchantment(), teamEnch.getAmplifier());
+                    meta.addEnchant(teamEnch.getEnchantment(), teamEnch.getAmplifier(), true);
                 }
 
                 meta.spigot().setUnbreakable(true);
@@ -170,16 +172,6 @@ public class ShopListener implements Listener {
             }
         }
     }
-
-    private boolean hasSharpness(IArena arena, Player player) {
-        for (TeamEnchant e : arena.getTeam(player).getSwordsEnchantments()) {
-            if (arena.getWorld().getPlayers().contains(player) && e.getEnchantment().equals(Enchantment.DAMAGE_ALL)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void giveItem(Player player, ItemStack buyItem, Material currency, int price, String identifyer) {
         Hotbar.bw.getShopUtil().takeMoney(player, currency, price);
         Map<Integer, String> data = hotbarCatch.get(player.getUniqueId());
@@ -299,6 +291,7 @@ public class ShopListener implements Listener {
         }
         return false;
     }
+
 
 
 }
