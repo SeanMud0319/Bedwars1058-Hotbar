@@ -35,7 +35,6 @@ import static com.andrei1058.bedwars.BedWars.nms;
 import static com.nontage.menus.HotbarMenu.hotbarCatch;
 
 public class ShopListener implements Listener {
-    //工具要重放位子 劍要有鋒利檢查
     public static Map<UUID, Boolean> a = new HashMap<>();
 
     @EventHandler
@@ -69,9 +68,23 @@ public class ShopListener implements Listener {
             if (content.getIdentifier().endsWith("sword")) {
                 ItemMeta meta = buyItem.getItemMeta();
                 assert meta != null;
-                if (hasSharpness(e.getArena(), player)) {
-                    meta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+                Map<Enchantment, Integer> buyItemEnchants = buyItem.getEnchantments();
+                for (Enchantment ench : buyItemEnchants.keySet()) {
+                    boolean hasEnch = false;
+                    for (TeamEnchant teamEnch : e.getArena().getTeam(player).getSwordsEnchantments()) {
+                        if (teamEnch.getEnchantment().equals(ench)) {
+                            hasEnch = true;
+                            break;
+                        }
+                    }
+                    if (!hasEnch) {
+                        buyItem.removeEnchantment(ench);
+                    }
                 }
+                for (TeamEnchant teamEnch : e.getArena().getTeam(player).getSwordsEnchantments()) {
+                    buyItem.addEnchantment(teamEnch.getEnchantment(), teamEnch.getAmplifier());
+                }
+
                 meta.spigot().setUnbreakable(true);
                 buyItem.setItemMeta(meta);
                 removeWoodSword(player);
@@ -197,6 +210,8 @@ public class ShopListener implements Listener {
                         player.getInventory().addItem(buyItem);
                     }
                     return;
+                } else {
+                    player.getInventory().addItem(buyItem);
                 }
             }
             return;
