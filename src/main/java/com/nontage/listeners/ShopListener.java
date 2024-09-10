@@ -66,6 +66,11 @@ public class ShopListener implements Listener {
                 giveItem(player, buyItem, currency, price, content.getIdentifier());
                 return;
             }
+            if (content.getIdentifier().startsWith("ranged")) {
+                ItemMeta meta = buyItem.getItemMeta();
+                meta.spigot().setUnbreakable(true);
+                buyItem.setItemMeta(meta);
+            }
             if (content.getIdentifier().endsWith("sword")) {
                 ItemMeta meta = buyItem.getItemMeta();
                 assert meta != null;
