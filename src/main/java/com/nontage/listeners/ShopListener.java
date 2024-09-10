@@ -188,8 +188,15 @@ public class ShopListener implements Listener {
                     ItemStack temp = currentItem.clone();
                     player.getInventory().setItem(firstSlot, buyItem);
                     player.getInventory().addItem(temp);
-                } else {
-                    player.getInventory().addItem(buyItem);
+                } else if (getItemId(currentItem).equals(getItemId(buyItem)) && nms.isSword(currentItem)) {
+                    if (nms.getDamage(buyItem) >= nms.getDamage(currentItem)) {
+                        ItemStack temp = currentItem.clone();
+                        player.getInventory().setItem(firstSlot, buyItem);
+                        player.getInventory().addItem(temp);
+                    } else {
+                        player.getInventory().addItem(buyItem);
+                    }
+                    return;
                 }
             }
             return;
@@ -206,6 +213,15 @@ public class ShopListener implements Listener {
                 ItemStack temp = item.clone();
                 player.getInventory().setItem(slot, buyItem);
                 player.getInventory().addItem(temp);
+                return;
+            } else if (getItemId(item).equals(getItemId(buyItem)) && nms.isSword(item)) {
+                if (nms.getDamage(buyItem) >= nms.getDamage(item)) {
+                    ItemStack temp = item.clone();
+                    player.getInventory().setItem(slot, buyItem);
+                    player.getInventory().addItem(temp);
+                } else {
+                    player.getInventory().addItem(buyItem);
+                }
                 return;
             }
         }
